@@ -12,6 +12,12 @@ pyjwt = "*"
 pymysql = "*"
 sqlalchemy = "*"
 python-dotenv = "*"
+opencv-python = "*"
+numpy = "*"
+scikit-learn = "*"
+scikit-image = "*"
+pypickle = "*"
+pandas = "*"
 
 [dev-packages]
 

@@ -37,7 +37,6 @@ def token_required(role):
                     }, 407
                 return {
                     "message": "Something went wrong",
-                    "data": None,
                     "error": str(e)
                 }, 500
             return f(current_user, *arg, *kwargs)

@@ -23,7 +23,9 @@ class Rekams(Base):
     gejala_id = Column(Integer,ForeignKey('gejalas.id'),nullable=False)
     nama_pasien = Column(String(255),nullable=False)
     tgl_lahir_pasien = Column(DATE,nullable=False)
-    image = Column(String(255),nullable=False)
+    image = Column(String(255),nullable=True)
+    jenis_katarak = Column(String(255),nullable=True)
+    akurasi_cf = Column(Float)
     createAt = Column(DATETIME,nullable=False)
 
     user_relation = relationship("Users", back_populates="rekam_relation")

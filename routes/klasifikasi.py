@@ -94,5 +94,7 @@ def CF(current_user):
         }),200)
     
     except Exception as e:
+        session.rollback()
+
         return make_response(jsonify(error=str(e)),500)
     

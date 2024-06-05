@@ -9,6 +9,7 @@ import cv2
 import numpy as np
 import pypickle
 import pandas as pd
+from timeit import default_timer as timer
 
 from package_system import detection
 
@@ -42,7 +43,6 @@ def upload(current_user):
     except Exception as e:
         return make_response(jsonify(message="error :" + str(e)),500)
 
-
 @router.route("/svm",methods=["POST"])
 @token_required(["dokter","pasien"])
 def svm(current_user):
@@ -51,6 +51,7 @@ def svm(current_user):
     idRekams = request.headers['Idrekam']
     try:
         rekaman = session.query(model.Rekams).filter_by(id=idRekams).first()
+        start = timer()
         img = cv2.imread(rekaman.image)
         img = cv2.resize(img,(300,300),interpolation=cv2.INTER_CUBIC)
         img = detection.removeFlare(img)
@@ -63,21 +64,35 @@ def svm(current_user):
         x = pd.DataFrame(x_data)
         modelload = pypickle.load("./APIfile/model2.pkl")
         result = modelload.predict(x)
+        end = timer()
+        waktu = end-start
         if result[0] == 0:
             rekaman.gejala_relation.gejala17 = 1.0
             session.commit()
             session.close()
+            print({
+                "message":"success",
+                "Result":"Katarak",
+                "runtime":str(waktu)+' s'
+            })
             return make_response(jsonify({
                 "message":"success",
                 "Result":"Katarak",
+                "runtime":str(waktu)+' s'
             }),200)
         else: 
             rekaman.gejala_relation.gejala17 = 0.0
             session.commit()
             session.close()
+            print({
+                "message":"success",
+                "Result":"Normal",
+                "runtime":str(waktu)+' s'
+            })
             return make_response(jsonify({
                 "message":"success",
                 "Result":"Normal",
+                "runtime":str(waktu)+' s'
             }),200)
     except Exception as e:
         session.rollback()

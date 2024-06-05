@@ -34,6 +34,7 @@ def addRekaman(current_user):
         session.close()
         return make_response(jsonify(response),200)
     except Exception as e:
+        session.rollback()
         return make_response(jsonify(error=str(e)),500)
 
 @router.route("/all_rekaman",methods=['GET'])
@@ -71,6 +72,7 @@ def allrekaman(current_user):
         } for data in datas]
         return make_response(jsonify(all_data),200)
     except Exception as e:
+        session.rollback()
         return make_response(jsonify(error=str(e)),500)
 
 @router.route("/rekaman",methods=['GET'])
@@ -116,6 +118,23 @@ def rekamanbyid(current_user):
         } 
         return make_response(jsonify(all_data),200)
     except Exception as e:
+        session.rollback()
+        return make_response(jsonify(error=str(e)),500)
+    
+@router.route("/profil",methods=['GET'])
+@token_required(["pasien"])
+def profilNow(current_user):
+    try:
+        data_user = session.query(model.Users).filter_by(username = current_user.username).first()
+        profil_data = {
+            'username' : data_user.username,
+            'email' : data_user.email,
+            'nama_lengkap' : data_user.nama_lengkap,
+            'tgl_lahir' : data_user.tgl_lahir,
+        }
+        return make_response(jsonify(profil_data),200)
+    except Exception as e:
+        session.rollback()
         return make_response(jsonify(error=str(e)),500)
 
 @router.route("/rekaman",methods=['DELETE'])
@@ -136,4 +155,5 @@ def deleteRekaman(current_user):
         session.close()
         return make_response(jsonify(message="success delete id="+str(id_get)),200)
     except Exception as e:
+        session.rollback()
         return make_response(jsonify(error=str(e)),500)

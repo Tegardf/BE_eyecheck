@@ -62,7 +62,7 @@ def svm(current_user):
         x_array.append(roi_pupil.flatten())
         x_data = np.array(x_array)
         x = pd.DataFrame(x_data)
-        modelload = pypickle.load("./APIfile/model2.pkl")
+        modelload = pypickle.load("./Cloud-Model/model2.pkl")
         result = modelload.predict(x)
         end = timer()
         waktu = end-start

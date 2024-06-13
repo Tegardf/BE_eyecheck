@@ -2,9 +2,12 @@ from flask import make_response, jsonify, request, Blueprint
 from models import model
 from models.database import session
 import bcrypt, jwt, datetime, os
+from dotenv import load_dotenv
 from middleware.authorization import token_required
 
 router = Blueprint("auth",__name__)
+
+load_dotenv()
 
 @router.route("/", methods=["GET"])
 def testrouter():

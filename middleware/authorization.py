@@ -1,9 +1,11 @@
 from functools import wraps
 import jwt, os
+from dotenv import load_dotenv
 from flask import request
 from models.model import Users
 from models.database import session
 
+load_dotenv()
 def token_required(role):
     def decorator(f):
         @wraps(f)

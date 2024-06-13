@@ -1,6 +1,9 @@
+from dotenv import load_dotenv
 import os
 import routes
 from flask import Flask, request, make_response, jsonify,send_file
+
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -24,4 +27,4 @@ app.register_blueprint(routes.klasifikasi.router, url_prefix="/klasifikasi")
 
 
 if __name__ == "__main__":
-    app.run(host=os.getenv("HOST"), port=os.getenv("PORT"))
+    app.run(host=os.getenv("HOST"), port=os.getenv("PORT"),debug=True)
